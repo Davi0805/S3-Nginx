@@ -66,7 +66,7 @@ const getCookie = (name) => {
 
 
 const axiosConfig = axios.create({
-  baseURL: "http://104.131.88.53:8080/api/",
+  baseURL: "http://104.131.88.53:80/api/",
   headers: {
     "Content-Type": "application/json",
   },

@@ -16,9 +16,10 @@ services:
   frontend:
     build:
       context: ./myfrontend
-    command: npm start  # Use this for React development mode
+    command: npm run start  # Use this for React development mode
     volumes:
       - ./myfrontend:/app
+      - ./build:/app/build
     ports:
       - "3000:3000"  # Expose the frontend on port 3000
     environment:
