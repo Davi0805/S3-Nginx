@@ -53,8 +53,8 @@ export default function Detalhes() {
       const fetchData = async () => {
 
         try {
-
-          const url = "/ship/shipments/" + params.id;
+          // TODO: ALTERAR PATH COM ID DINAMICO
+          const url = "/ship/shipments/1";
 
           console.log(url);
 

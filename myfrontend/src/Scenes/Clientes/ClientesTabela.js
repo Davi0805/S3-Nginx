@@ -104,7 +104,8 @@ const ClientesTabela = ({ margin, altura, largura }) => {
 
   const fetchCargas = async () => {
     try {
-      const response = await axiosConfig.get('/ship/clientes/company/{company_id}', {
+      // TODO: ADICIONAR ID DA EMPRESA DINAMICAMENTE
+      const response = await axiosConfig.get('/ship/clientes/company/1', {
         withCredentials: true, // Ensure this is set
       });
 
