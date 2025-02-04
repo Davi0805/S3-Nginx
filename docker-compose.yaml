@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: . # Use the current directory as the build context
+      dockerfile: Dockerfile # Specify the Dockerfile in the root directory
+    ports:
+      - "80:80"
+      - "443:443" # Map port 443 of the container to port 443 on the host
+    container_name: app-container # Give the container a name
