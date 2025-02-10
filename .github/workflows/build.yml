@@ -1,0 +1,34 @@
+steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: myfrontend
+
+      - name: Build React application
+        run: npm run build
+        working-directory: myfrontend
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H ${{ secrets.VPS_IP }} >> ~/.ssh/known_hosts
+          ssh root@${{ secrets.VPS_IP }} << 'EOF'
+            docker compose down
+            cd ~/nginx/static && [ "$PWD" = "$HOME/nginx/static" ] && rm -rf *
+          EOF
+
+      - name: Transfer built files to VPS
+        run: scp -i ~/.ssh/id_ed25519 -r build/* root@${{ secrets.VPS_IP }}:~/nginx/static
+        working-directory: myfrontend
+
+      - name: Restart Nginx
+        run: ssh -i ~/.ssh/id_ed25519 root@${{ secrets.VPS_IP }} "docker compose up"
