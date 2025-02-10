@@ -24,6 +24,8 @@ services:
       - "3000:3000"  # Expose the frontend on port 3000
     environment:
       - NODE_ENV=development
+    restart: unless-stopped 
+
     stdin_open: true
     tty: true
 

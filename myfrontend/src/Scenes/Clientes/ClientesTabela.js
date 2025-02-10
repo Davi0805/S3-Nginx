@@ -16,63 +16,25 @@ const ClientesTabela = ({ margin, altura, largura }) => {
   const [error, setError] = useState(null);
 
   const columnscarga = [
-    { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
+    { field: "nome", headerName: "Cliente", flex: 0.5 },
     {
-      field: "shipping_status",
-      headerName: "Status de Envio",
+      field: "responsavelVendas",
+      headerName: "Responsavel",
       flex: 0.5,
       align: "center",
       headerAlign: "center",
     },
-    { field: "type_of_load", headerName: "Tipo de Carga", flex: 0.8, align: "center",
+    { field: "email", headerName: "Email", flex: 0.8, align: "center",
       headerAlign: "center", },
     {
-      field: "origin_name_display",
-      headerName: "Origem",
+      field: "telefone",
+      headerName: "Telefone",
       flex: 0.5,
       align: "center",
       headerAlign: "center",
     },
-    { field: "weight", headerName: "Peso", type: "number", flex: 0.5, align: "center",
+    { field: "cpfCnpj", headerName: "Cpf / Cnpj", type: "number", flex: 0.5, align: "center",
       headerAlign: "center", },
-    { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
-      headerAlign: "center", },
-    {
-      field: "BL",
-      headerName: "BL",
-      flex: 0.5,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        if (params.row.blfile === null) {
-          return (
-            <Button style={{ color: colors.redAccent[500] }} size="small">
-              Indisponível
-            </Button>
-          );
-        } else {
-          return (
-            <strong>
-              <a
-                href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
-                download={params.row.filename + '.' + params.row.extension}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    color: colors.grey[200],
-                    backgroundColor: colors.blueAccent[500],
-                  }}
-                  size="small"
-                >
-                  Baixar
-                </Button>
-              </a>
-            </strong>
-          );
-        }
-      },
-    },
     {
       field: " ",
       headerName: " ",

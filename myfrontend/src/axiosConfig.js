@@ -77,7 +77,6 @@ axiosConfig.interceptors.request.use(
   (config) => {
     /* Cookies.set('token', "Opa"); */
     const accessToken = Cookies.get('AUTH_TOKEN');
-    Cookies.set('AUTH_TOKEN', accessToken);
     console.log("AXIOS AUTH TOKEN: ", accessToken)
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;

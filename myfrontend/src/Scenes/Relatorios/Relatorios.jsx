@@ -1,6 +1,6 @@
 import React from "react";
 import RelatoriosTabela from "./RelatoriosTabela";
-import { Box, useTheme, Button } from "@mui/material";
+import { Box, useTheme, Button, Typography } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../Components/Header/Header";
 import NovaCargapopup from "../../Components/NovaCargapopup";
@@ -10,6 +10,9 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
 import DescriptionIcon from "@mui/icons-material/Description";
 import BlockIcon from "@mui/icons-material/Block";
+
+import { mockTransactions } from "../../Data/mockData";
+
 
 import StatBox from "../../Components/StatBox";
 
@@ -154,7 +157,7 @@ export default function Clientes() {
           sx={{ boxShadow: 5 }}
         >
           <StatBox
-            title={"R$7200"}
+            title={"R$72000"}
             subtitle="Faturamento semestral"
             icon={<DescriptionIcon sx={{ color: colors.blueAccent[400] }} />}
             progress={`${(stats.option_b_count / (stats.option_t_count + stats.option_b_count + stats.option_p_count + stats.option_l_count)) * 100}`}
@@ -164,9 +167,86 @@ export default function Clientes() {
         </Box>
         
       </Box>
-      <Box mt="15px ">
+      <Box
+                gridColumn={{
+                  xs: "span 12", // Full width on extra small screens
+                  sm: "span 6", // Half width on small screens
+                  md: "span 9",}}
+                gridRow={{
+                  xs: "span 8",
+                  sm: "span 6",
+                  md: "span 4",}}
+                backgroundColor={colors.primary[400]}
+                display="flex"
+                width="100%"
+                height="auto"
+                sx={{ boxShadow: 4,
+                        
+                 }}
+              >
         <RelatoriosTabela />
+      
       </Box>
+      <Box
+           gridColumn={{
+            xs: "span 12", // Full width on extra small screens
+            sm: "span 6", // Half width on small screens
+            md: "span 3",}}
+          gridRow={{
+            xs: "span 8",
+            sm: "span 6",
+            md: "span 4",}}
+          width="100%"
+          height="auto"
+          backgroundColor={colors.primary[400]}
+          sx={{ boxShadow: 4 }}
+          overflow="auto"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            borderBottom={`4px solid ${colors.blueAccent[400]}`}
+            colors={colors.grey[100]}
+            p="15px"
+          >
+            <Typography variant="h5" fontWeight="600" colors={colors.blueAccent[400]}>
+              Relatorios
+            </Typography>
+          </Box>
+          {mockTransactions.map((transaction, index) => (
+            <Box
+              sx={{ boxShadow: 4 }}
+              key={`${transaction.txId}-${index}`}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[400]}`}
+              p="15px"
+            >
+              <Box>
+                <Typography
+                  color={colors.blueAccent[400]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {transaction.txId}
+                </Typography>
+                <Typography color={colors.blueAccent[500]}>
+                  {transaction.user}
+                </Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{transaction.date}</Box>
+              <Box
+                backgroundColor={colors.blueAccent[500]}
+                p="5px 10px"
+                borderRadius="4px"
+              >
+                {transaction.cost}
+              </Box>
+            </Box>
+          ))}
+        </Box>
 </Box>
       );
 }

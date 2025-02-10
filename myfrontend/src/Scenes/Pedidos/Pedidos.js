@@ -16,7 +16,7 @@ const Pedidos = ({ margin, altura, largura }) => {
   const [error, setError] = useState(null);
 
   const columnscarga = [
-    { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
+    { field: "cliente_name", headerName: "Cliente", flex: 0.8 },
     {
       field: "shipping_status",
       headerName: "Status de Envio",
@@ -44,6 +44,27 @@ const Pedidos = ({ margin, altura, largura }) => {
       align: "center",
       headerAlign: "center",
       renderCell: (params) => {
+        const handleDownload = async () => {
+          try {
+            const response = await axiosConfig.get(
+              `/ship/shipments/download/BL/${params.row.id}`,
+              {
+                responseType: 'blob',
+                withCredentials: true,
+              }
+            );
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${params.row.filename}.${params.row.extension}`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          } catch (error) {
+            console.error("Download failed", error);
+          }
+        };
+
         if (params.row.blfile === null) {
           return (
             <Button style={{ color: colors.redAccent[500] }} size="small">
@@ -52,23 +73,17 @@ const Pedidos = ({ margin, altura, largura }) => {
           );
         } else {
           return (
-            <strong>
-              <a
-                href={`http://127.0.0.1:8000/repositorio/bl/${params.row.id}`}
-                download={params.row.filename + '.' + params.row.extension}
-              >
-                <Button
-                  variant="contained"
-                  sx={{
-                    color: colors.grey[200],
-                    backgroundColor: colors.blueAccent[500],
-                  }}
-                  size="small"
-                >
-                  Baixar
-                </Button>
-              </a>
-            </strong>
+            <Button
+              variant="contained"
+              sx={{
+                color: colors.grey[200],
+                backgroundColor: colors.blueAccent[500],
+              }}
+              size="small"
+              onClick={handleDownload}
+            >
+              Baixar
+            </Button>
           );
         }
       },
@@ -76,7 +91,7 @@ const Pedidos = ({ margin, altura, largura }) => {
     {
       field: " ",
       headerName: " ",
-      flex: 0.5,
+      flex: 0.6,
       align: "center",
       headerAlign: "center",
       renderCell: (params) => (

@@ -85,7 +85,7 @@ const Topbar = () => {
         {/* <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem> */}
         <Box display="flex" alignItems="center" marginLeft="5px">
           <MenuItem component={Link} to="/dashboard/relatorios">
-            Relatorios
+            Empresas
           </MenuItem>
           <MenuItem component={Link} to="/dashboard/pedidos">
             Cargas

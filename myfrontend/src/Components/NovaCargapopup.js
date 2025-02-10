@@ -33,7 +33,7 @@ import { useNavigate } from "react-router-dom";
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
-const NovaCargapopup = () => {
+const NovaCargapopup = ({ company_id }) => {
   const queryClient = useQueryClient();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -80,29 +80,36 @@ const NovaCargapopup = () => {
 
 
   useEffect(() => {
-
-    fetch("http://127.0.0.1:8000/contractor/")
-      .then((response) => response.json())
-      .then((data) => {
-        const contractors = data.results;
+    const fetchContractors = async () => {
+      try {
+        const response = await axiosConfig.get("/ship/clientes/");
+        const contractors = response.data;
+        console.log("DEBUG NOVA CARGA", contractors)
         setOptions(
           contractors.map((contractor) => ({
             id: contractor.id,
-            name: contractor.name,
-          })),
+            name: contractor.nome,
+          }))
         );
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      } catch (error) {
+        console.error("Error fetching contractors:", error);
+      }
+    };
 
-    fetch("http://127.0.0.1:8000/country/")
-      .then((response) => response.json())
-      .then((data) => {
-        const countries = data.results;
+    const fetchCountries = async () => {
+      try {
+        const response = await axiosConfig.get("/country/");
+        const countries = response.data.results;
         setCoptions(
-          countries.map((country) => ({ id: country.id, name: country.name })),
+          countries.map((country) => ({ id: country.id, name: country.name }))
         );
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+
+    fetchContractors();
+    fetchCountries();
   }, []);
 
   const funcopenchange = () => {
@@ -140,11 +147,17 @@ const NovaCargapopup = () => {
           onSubmit: async (event) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            formData.append('data', JSON.stringify(formJson));
-            console.log(formData); //CHECAR ANTES DE PRODUCAO
+            formData.append('ce_mercante_filename', ce_mfilename);
+            formData.append('bl_filename', blfilename);
+            formData.append('packinglist_filename', packlistfile);
+            formData.append('afrmm_filename', afrmmfile);
+            formData.append('shipping_status', 'PENDENTE');
+            formData.append('referencia_id', '32323'); // Add other required fields as needed
+            formData.append('num_nf', '32323'); // Add other required fields as needed
+            formData.append('company_id', company_id);
+
             try {
-              const response = await axiosConfig.post('/cargasinfo/', formData, {
+              const response = await axiosConfig.post('/ship/shipments/', formData, {
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
@@ -169,7 +182,7 @@ const NovaCargapopup = () => {
         <DialogContent>
           <Box marginTop="15px">
             <FormControl fullWidth>
-              <InputLabel htmlFor="contractorname">Cliente</InputLabel>
+              <InputLabel htmlFor="cliente">Cliente</InputLabel>
               <Select
                 style={{
                   height: 50,
@@ -189,7 +202,7 @@ const NovaCargapopup = () => {
                   </InputAdornment>
                 }
                 onChange={(event) => setValue(event.target.value)}
-                name="contractorname"
+                name="cliente"
               >
                 {options.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
@@ -329,7 +342,7 @@ const NovaCargapopup = () => {
               />
             </FormControl>
           </Box>
-          <Box marginTop={"25px"}display="flex">
+          <Box marginTop={"25px"} display="flex">
             <FormControl fullWidth>
               <Button
                 variant="outlined"

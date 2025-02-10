@@ -96,7 +96,7 @@ const Dashboard = () => {
             subtitle="Bem vindo ao painel de controle!"
           />
         </Box>
-        <Box
+        {/* <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -105,7 +105,7 @@ const Dashboard = () => {
         >
           <NovaCargapopup />
           
-        </Box>
+        </Box> */}
       </Box>
       <Box
         display="grid"
@@ -285,21 +285,21 @@ const Dashboard = () => {
           ))}
         </Box>
       </Box>
-      <BottomNavigation component={"footer"}
+      {<BottomNavigation component={"footer"}
         sx={{
           position: 'relative',
           top: 10,
           bottom: 0,
           left: 0,
           width: '100%',
-          bgcolor: colors.blueAccent[400],
+          bgcolor: colors.primary[400],
           py: 2,
           textAlign: 'center',
         }}>
         <Typography variant="h6" color={colors.grey[200]}>
-          © 2021 Trevo. Todos os direitos reservados.
+          © 2021 GNOSE. Todos os direitos reservados.
         </Typography>
-      </BottomNavigation>
+      </BottomNavigation>}
     </Box>
   );
 };

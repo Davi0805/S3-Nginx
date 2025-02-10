@@ -58,7 +58,7 @@ export default function PaginaPedidos() {
           marginRight="25px"
           sx={{ gap: "20px" }}
         >
-          <NovaCargapopup />
+          <NovaCargapopup company_id={1} />
           <Button
             onClick={() =>
               downloadFileFromApi(

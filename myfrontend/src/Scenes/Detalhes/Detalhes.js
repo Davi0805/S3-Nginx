@@ -87,7 +87,7 @@ export default function Detalhes() {
         alignItems="center"
       >
         <Box>
-          <Header title="Carga" subtitle={data.contractor_name_display} />
+          <Header title="Carga" subtitle={data.cliente_name} />
         </Box>
 
         <Box
