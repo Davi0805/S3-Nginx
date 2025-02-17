@@ -46,4 +46,4 @@ jobs:
             working-directory: myfrontend
 
           - name: Restart Nginx
-            run: ssh -i ~/.ssh/id_ed25519 root@${{ secrets.VPS_IP }} "docker compose up"
+            run: ssh -i ~/.ssh/id_ed25519 root@${{ secrets.VPS_IP }} "docker compose up --build -d"
