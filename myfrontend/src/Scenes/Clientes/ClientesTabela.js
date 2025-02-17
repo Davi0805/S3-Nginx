@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import axiosConfig from "../../axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 
-const ClientesTabela = ({ margin, altura, largura }) => {
+const ClientesTabela = ({ margin, altura, largura, companyId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
   const fetchCargas = async () => {
     try {
       // TODO: ADICIONAR ID DA EMPRESA DINAMICAMENTE
-      const response = await axiosConfig.get('/ship/clientes/company/1', {
+      const response = await axiosConfig.get('/ship/clientes/company/' + companyId, {
         withCredentials: true, // Ensure this is set
       });
 
@@ -81,7 +81,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
 
   useEffect(() => {
     fetchCargas();
-  }, []);
+  }, [companyId]);
 
   if (loading) {
     return <LinearProgress sx={{ color: colors.blueAccent[400] }} />;

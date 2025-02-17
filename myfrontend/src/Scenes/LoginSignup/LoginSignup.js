@@ -86,15 +86,29 @@ export const LoginSignup = () => {
             </Box>
           </Box>
         </Box>
-        <Box display="flex" justifyContent="center" size="large" m="20px">
+        <Box display="flex" flexDirection="column" alignItems="center" m="20px">
           <Button
             type="submit"
             variant="contained"
             size="large"
-            sx={{ backgroundColor: colors.blueAccent[500], color: colors.grey[200] }}
+            sx={{ backgroundColor: colors.blueAccent[500], color: colors.grey[200], mb: 2 }}
           >
             Logar
           </Button>
+          <Typography
+            variant="body2"
+            sx={{
+              color: colors.grey[300],
+              cursor: 'pointer',
+              '&:hover': {
+                color: colors.blueAccent[400],
+                textDecoration: 'underline'
+              }
+            }}
+            onClick={() => navigate('/register')}
+          >
+            Não tem uma conta? Registre-se aqui
+          </Typography>
         </Box>
       </Box>
     </Box>

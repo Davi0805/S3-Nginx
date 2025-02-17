@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import axiosConfig from "../../axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 
-const ClientesTabela = ({ margin, altura, largura }) => {
+const ClientesTabela = ({ margin, altura, largura, companyId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
   const [error, setError] = useState(null);
 
   const columnscarga = [
-    { field: "ce_mercante", headerName: "Cliente", flex: 0.8 },
+    { field: "cliente_name", headerName: "Cliente", flex: 0.8 },
     {
       field: "shipping_status",
       headerName: "Status de Envio",
@@ -37,7 +37,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
       headerAlign: "center", },
     { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
       headerAlign: "center", },
-    {
+    /* {
       field: "BL",
       headerName: "BL",
       flex: 0.5,
@@ -72,7 +72,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
           );
         }
       },
-    },
+    }, */
     {
       field: " ",
       headerName: " ",
@@ -105,7 +105,7 @@ const ClientesTabela = ({ margin, altura, largura }) => {
   const fetchCargas = async () => {
     try {
       // ADICIONAR ID DINAMICO
-      const response = await axiosConfig.get('/ship/shipments/company/1', {
+      const response = await axiosConfig.get('/ship/shipments/company/' + companyId, {
         withCredentials: true, // Ensure this is set
       });
 

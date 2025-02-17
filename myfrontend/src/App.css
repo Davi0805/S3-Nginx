@@ -1,5 +1,9 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
 }
 
 .App-logo {
@@ -20,7 +24,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(2vmin);
   color: white;
 }
 
@@ -36,3 +40,31 @@
     transform: rotate(360deg);
   }
 }
+
+.sidebar {
+  width: 300px;
+  transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+/* .sidebar-item span {
+  margin-left: 10px;
+} */
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* Add more styles as needed */

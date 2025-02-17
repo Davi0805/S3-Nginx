@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import DeleteButton from "../../Components/Deletebutton";
 import { tokens } from "../../theme";
-import Header from "../../Components/Header/Header";
+import StaticHeader from "../../Components/Header/StaticHeader";
 import DownloadIcon from '@mui/icons-material/Download';
 import StatBox from "../../Components/StatBox";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -43,6 +43,23 @@ export default function Detalhes() {
   const id = params.id;
   console.log(id);
 
+  const getButtonProps = (status) => {
+    switch (status) {
+      case 'PENDENTE':
+        return { text: 'Pendente', color: '#DAA520' }; // Using amber/orange color
+      case 'TRANSITO':
+        return { text: 'Em trânsito', color: colors.greenAccent[700] };
+      case 'BLOQUEADO':
+        return { text: 'Bloqueado', color: colors.redAccent[700] };
+      case 'LIBERADO':
+        return { text: 'Liberado', color: colors.blueAccent[700] };
+      default:
+        return { text: 'Desconhecido', color: colors.grey[700] };
+    }
+  };
+
+  const { text, color } = getButtonProps(data.shipping_status);
+
 
   useEffect(() => {
 
@@ -54,7 +71,7 @@ export default function Detalhes() {
 
         try {
           // TODO: ALTERAR PATH COM ID DINAMICO
-          const url = "/ship/shipments/1";
+          const url = "/ship/shipments/" + id;
 
           console.log(url);
 
@@ -87,7 +104,7 @@ export default function Detalhes() {
         alignItems="center"
       >
         <Box>
-          <Header title="Carga" subtitle={data.cliente_name} />
+          <StaticHeader title="Carga" subtitle={data.cliente_name} />
         </Box>
 
         <Box
@@ -133,7 +150,7 @@ export default function Detalhes() {
     {/* Header Section */}
     <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="15px" alignContent={"center"}>
       <Typography variant="h5" color={colors.grey[200]}>
-        Id: {data.referenciaid}
+        Id: {data.referencia_id}
       </Typography>
       <Typography variant="h5" color={colors.grey[200]}>
         Data: {data.created_at ? `${data.created_at.substring(8, 10)} / ${data.created_at.substring(5, 7)} / ${data.created_at.substring(0, 4)}` : 'N/A'}
@@ -142,13 +159,13 @@ export default function Detalhes() {
          <Button
             variant="contained"
             sx={{
-              backgroundColor: colors.greenAccent[700],
+              backgroundColor: color,
               fontSize: "10px",
               fontWeight: "bold",
               color: colors.grey[100],
             }}
           >
-            Em transito
+            {text}
           </Button>
           </Box>
         
@@ -160,7 +177,7 @@ export default function Detalhes() {
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px">
             <Typography variant="h5" color={colors.grey[200]} >Custo: R${data.cost}</Typography>
             <Typography variant="h5" color={colors.grey[200]} >NCM: {data.ncm}</Typography>
-            <Typography variant="h5" color={colors.grey[200]} >Container: {data.cntrnum}</Typography>
+            <Typography variant="h5" color={colors.grey[200]} >Nota fiscal: {data.num_nf}</Typography>
             </Box>
             <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap="20px">
             <Typography variant="h5" color={colors.grey[200]} >Origem: {data.origin_name_display}</Typography>

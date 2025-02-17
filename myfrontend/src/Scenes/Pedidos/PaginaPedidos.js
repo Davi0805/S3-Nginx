@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Pedidos from "./Pedidos";
 import { Box, useTheme, Button } from "@mui/material";
+import { useState } from "react";
 import { tokens } from "../../theme";
 import Header from "../../Components/Header/Header";
 import NovaCargapopup from "../../Components/NovaCargapopup";
 import axiosConfig from "../../axiosConfig";
+import { AuthContext } from "../../authContext";
 
 export default function PaginaPedidos() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { companies } = useContext(AuthContext);
+  const [selectedCompany, setSelectedCompany] = useState(companies[0]?.companyName || "");
+
+
   const downloadFileFromApi = async (apiUrl, fileName, fileType) => {
     console.log("Downloading file...");
     try {
@@ -40,6 +46,16 @@ export default function PaginaPedidos() {
     }
   };
 
+  useEffect(() => {
+      // Retrieve companies from local storage or cookies if not available in context
+      if (!companies.length) {
+        const storedCompanies = JSON.parse(localStorage.getItem('companies')) || [];
+        setSelectedCompany(storedCompanies[0]?.companyName || "");
+      }
+    }, [companies]);
+
+    const selectedCompanyObj = companies.find(company => company.companyName === selectedCompany);
+
   return (
     <Box m="20px">
       <Box
@@ -49,7 +65,7 @@ export default function PaginaPedidos() {
         alignItems="center"
       >
         <Box>
-          <Header title="Nome da empresa" subtitle="Registros de carga" />
+        <Header title={selectedCompany} subtitle="Registros de carga" companies={companies} onCompanyChange={setSelectedCompany} />
         </Box>
         <Box
           display="flex"
@@ -58,7 +74,7 @@ export default function PaginaPedidos() {
           marginRight="25px"
           sx={{ gap: "20px" }}
         >
-          <NovaCargapopup company_id={1} />
+          <NovaCargapopup company_id={selectedCompanyObj?.id.companyId} />
           <Button
             onClick={() =>
               downloadFileFromApi(
@@ -83,7 +99,7 @@ export default function PaginaPedidos() {
         </Box>
       </Box>
       <Box mt="15px ">
-        <Pedidos />
+        <Pedidos company_id={selectedCompanyObj?.id.companyId}/>
       </Box>
     </Box>
   );

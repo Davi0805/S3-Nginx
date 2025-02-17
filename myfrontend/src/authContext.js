@@ -32,6 +32,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [cookies, setCookies, removeCookie] = useCookies(['token', 'refresh']);
     const navigate = useNavigate();
+    const [companies, setCompanies] = useState([]);
+
+    useEffect(() => {
+      // Retrieve companies from local storage if available
+      const storedCompanies = JSON.parse(localStorage.getItem('companies')) || [];
+      if (storedCompanies.length) {
+        setCompanies(storedCompanies);
+      }
+    }, []);
 
     /* useEffect(() => {
         // Check if the token exists in cookies on initial load
@@ -83,6 +92,11 @@ export const AuthProvider = ({ children }) => {
           Cookies.set('isAuthenticated', true); // Optional: track authentication status
     
           setIsAuthenticated(true);
+          console.log('Console LOG ANTES DE SETAR', res.data.companies);
+          setCompanies(res.data.companies);
+          localStorage.setItem('companies', JSON.stringify(res.data.companies)); // Store companies in local storage
+          console.log('COMPANIES DEBUG = ', res.data.companies);
+          console.log('COMPANIES DEBUG = ', companies);
           navigate('/dashboard');
         } catch (error) {
           console.error("Login error:", error);
@@ -93,9 +107,11 @@ export const AuthProvider = ({ children }) => {
         /* deleteCookie('token');
         deleteCookie('refresh');
         deleteCookie('isAuthenticated'); */
+        axiosConfig.post('/usr/user/logout')
         Cookies.remove('token');
         Cookies.remove('refresh');
         Cookies.remove('isAuthenticated');
+        localStorage.removeItem('companies'); // Remove companies from local storage
         setIsAuthenticated(false);
         navigate('/'); // Adjust path if necessary
       };
@@ -105,9 +121,10 @@ const value = useMemo(
         isAuthenticated,
         cookies,
         login,
-        logout
+        logout,
+        companies,
     }),
-    [isAuthenticated]
+    [isAuthenticated, companies]
 );
 
   return (

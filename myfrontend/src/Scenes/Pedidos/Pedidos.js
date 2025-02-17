@@ -7,7 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import axiosConfig from "../../axiosConfig";
 import { Link, useNavigate } from "react-router-dom";
 
-const Pedidos = ({ margin, altura, largura }) => {
+const Pedidos = ({ margin, altura, largura, company_id }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Pedidos = ({ margin, altura, largura }) => {
       headerAlign: "center", },
     { field: "cost", headerName: "Custo", type: "number", flex: 0.5, align: "center",
       headerAlign: "center", },
-    {
+    /* {
       field: "BL",
       headerName: "BL",
       flex: 0.5,
@@ -87,7 +87,7 @@ const Pedidos = ({ margin, altura, largura }) => {
           );
         }
       },
-    },
+    }, */
     {
       field: " ",
       headerName: " ",
@@ -119,9 +119,17 @@ const Pedidos = ({ margin, altura, largura }) => {
 
   const fetchCargas = async () => {
     try {
-      const response = await axiosConfig.get('/ship/shipments/user-dashboard', {
-        withCredentials: true, // Ensure this is set
-      });
+      let response;
+      if (company_id === null)
+      {
+          response = await axiosConfig.get('/ship/shipments/user-dashboard', {
+          withCredentials: true, // Ensure this is set
+          });
+      } else {
+          response = await axiosConfig.get('/ship/shipments/company/' + company_id, {
+          withCredentials: true, // Ensure this is set
+          });
+      }
 
       setData(response.data);
     } catch (error) {
@@ -133,7 +141,7 @@ const Pedidos = ({ margin, altura, largura }) => {
 
   useEffect(() => {
     fetchCargas();
-  }, []);
+  }, [company_id]);
 
   if (loading) {
     return <LinearProgress sx={{ color: colors.blueAccent[400] }} />;

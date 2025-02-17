@@ -30,6 +30,7 @@ import { Alert } from '@mui/material';
 import { useQueryClient } from "@tanstack/react-query";
 import axiosConfig from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
+import PropTypes from 'prop-types';
 
 const apiUrl = "http://127.0.0.1:8000/contractor/";
 
@@ -452,6 +453,10 @@ const NovaCargapopup = ({ company_id }) => {
       </Snackbar>
     </div>
   );
+};
+
+NovaCargapopup.propTypes = {
+  company_id: PropTypes.number.isRequired,
 };
 
 export default NovaCargapopup;

@@ -10,13 +10,15 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
 import DescriptionIcon from "@mui/icons-material/Description";
 import BlockIcon from "@mui/icons-material/Block";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../authContext";
 
 import { mockTransactions } from "../../Data/mockData";
 
 
 import StatBox from "../../Components/StatBox";
 
-export default function Clientes() {
+export default function Relatorios() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const stats = {
@@ -25,6 +27,9 @@ export default function Clientes() {
     option_p_count: 3,
     option_l_count: 2,
   };
+
+  const { companies } = useContext(AuthContext);
+      const [selectedCompany, setSelectedCompany] = useState(companies[0]?.companyName || "");
 
   const downloadFileFromApi = async (apiUrl, fileName, fileType) => {
     console.log("Downloading file...");
@@ -57,6 +62,9 @@ export default function Clientes() {
     }
   };
 
+  const selectedCompanyObj = companies.find(company => company.companyName === selectedCompany);
+  
+
   return (
     <Box m="20px">
       <Box
@@ -66,7 +74,8 @@ export default function Clientes() {
         alignItems="center"
       >
         <Box>
-          <Header title="Nome da empresa" subtitle="Relatorios" />
+        <Header title={selectedCompany} subtitle="Visao geral" companies={companies} onCompanyChange={setSelectedCompany} />
+
           
         </Box>
       </Box>
@@ -168,34 +177,36 @@ export default function Clientes() {
         
       </Box>
       <Box
-                gridColumn={{
-                  xs: "span 12", // Full width on extra small screens
-                  sm: "span 6", // Half width on small screens
-                  md: "span 9",}}
-                gridRow={{
-                  xs: "span 8",
-                  sm: "span 6",
-                  md: "span 4",}}
-                backgroundColor={colors.primary[400]}
-                display="flex"
-                width="100%"
-                height="auto"
-                sx={{ boxShadow: 4,
-                        
-                 }}
-              >
-        <RelatoriosTabela />
-      
-      </Box>
-      <Box
-           gridColumn={{
-            xs: "span 12", // Full width on extra small screens
-            sm: "span 6", // Half width on small screens
-            md: "span 3",}}
-          gridRow={{
-            xs: "span 8",
-            sm: "span 6",
-            md: "span 4",}}
+        display="grid"
+        gridTemplateColumns={{
+          xs: "repeat(1, 1fr)", // Full width on extra small screens
+          sm: "repeat(1, 1fr)", // Full width on small screens
+          md: "repeat(4, 1fr)", // Three columns on medium screens
+        }}
+        mt="15px"
+        gap="15px"
+        gridAutoRows="minmax(140px, auto)"
+      >
+        <Box
+          gridColumn={{
+            xs: "span 3", // Full width on extra small screens
+            sm: "span 3", // Full width on small screens
+            md: "span 3", // Two-thirds width on medium screens
+          }}
+          backgroundColor={colors.primary[400]}
+          display="flex"
+          width="100%"
+          height="auto"
+          sx={{ boxShadow: 4 }}
+        >
+          <RelatoriosTabela margin={0} altura={"auto"} largura={"100%"} companyId={selectedCompanyObj?.id.companyId} />
+        </Box>
+        <Box
+          gridColumn={{
+            xs: "span 3", // Full width on extra small screens
+            sm: "span 3", // Full width on small screens
+            md: "span 1", // One-third width on medium screens
+          }}
           width="100%"
           height="auto"
           backgroundColor={colors.primary[400]}
@@ -211,7 +222,7 @@ export default function Clientes() {
             p="15px"
           >
             <Typography variant="h5" fontWeight="600" colors={colors.blueAccent[400]}>
-              Relatorios
+              Atividade
             </Typography>
           </Box>
           {mockTransactions.map((transaction, index) => (
@@ -245,8 +256,10 @@ export default function Clientes() {
                 {transaction.cost}
               </Box>
             </Box>
+            
           ))}
         </Box>
-</Box>
-      );
+      </Box>
+    </Box>
+  );
 }

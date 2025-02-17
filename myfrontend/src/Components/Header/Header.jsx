@@ -2,14 +2,14 @@ import { Typography, Box, useTheme, Select, MenuItem } from "@mui/material";
 import { tokens } from "../../theme";
 import React from "react";
 
-const Header = ({ title, subtitle/* , companies, onCompanyChange */ }) => {
+const Header = ({ title, subtitle, companies, onCompanyChange }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
     <Box m="30px">
       <Select
         value={title}
-        /* onChange={(e) => onCompanyChange(e.target.value)} */
+        onChange={(e) => onCompanyChange(e.target.value)}
         variant="outlined"
         sx={{ 
           mb: "5px", 
@@ -23,11 +23,11 @@ const Header = ({ title, subtitle/* , companies, onCompanyChange */ }) => {
           </Typography>
         )}
       >
-        {/* {companies.map((title) => ( */}
-          <MenuItem key={title} value={title}>
-            {title}
+        {companies.map((company) => (
+          <MenuItem key={company.id.companyId} value={company.companyName}>
+            {company.companyName}
           </MenuItem>
-{/*         ))} */}
+        ))}
       </Select>
       <Typography variant="h5" marginLeft={"16px"} color={colors.blueAccent[400]}>
         {subtitle}

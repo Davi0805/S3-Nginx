@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense, useContext } from "react";
 import { CircularProgress } from '@mui/material';
 import "./Dashboard.css";
 import { Typography, useTheme, Box, Button } from "@mui/material";
@@ -15,6 +15,9 @@ import axiosConfig from "../../axiosConfig";
 import { mockTransactions } from "../../Data/mockData";
 import { BottomNavigation } from "@mui/material";
 import axios from "axios";
+import { AuthContext } from "../../authContext";
+import StaticHeader from "../../Components/Header/StaticHeader";
+
 
 /* const Pedidos = lazy(() => import('../Pedidos/Pedidos')); */
 const NovaCargapopup = lazy(() => import('../../Components/NovaCargapopup'));
@@ -22,6 +25,8 @@ const NovaCargapopup = lazy(() => import('../../Components/NovaCargapopup'));
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { companies } = useContext(AuthContext); // Access companies data
+  const [selectedCompany, setSelectedCompany] = useState(companies[0]?.companyName || "");
   const [excelData, setExcelData] = useState(null);
 
   const [stats, setStats] = useState({
@@ -63,6 +68,14 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // Retrieve companies from local storage or cookies if not available in context
+    if (!companies.length) {
+      const storedCompanies = JSON.parse(localStorage.getItem('companies')) || [];
+      setSelectedCompany(storedCompanies[0]?.companyName || "");
+    }
+  }, [companies]);
+
+  useEffect(() => {
     const fetchStats = async () => {
       try {
         const response = await axiosConfig.get("statbox/");
@@ -82,6 +95,8 @@ const Dashboard = () => {
 
   }, []);
 
+  
+
   return (
     <Box m="20px">
       <Box
@@ -91,10 +106,8 @@ const Dashboard = () => {
         alignItems="center"
       >
         <Box>
-          <Header
-            title="RESUMO"
-            subtitle="Bem vindo ao painel de controle!"
-          />
+          {/* <Header title={selectedCompany} subtitle="Registros de carga" companies={companies} onCompanyChange={setSelectedCompany} /> */}
+          <StaticHeader title="Home" subtitle="Resumo das empresas"/>
         </Box>
         {/* <Box
           display="flex"
@@ -222,7 +235,7 @@ const Dashboard = () => {
                   
            }}
         >
-          <Pedidos margin={0} altura={"auto"} largura={"100%"} />
+          <Pedidos margin={0} altura={"auto"} largura={"100%"} company_id={null} />
         </Box>
         <Box
            gridColumn={{

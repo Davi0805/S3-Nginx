@@ -1,4 +1,5 @@
 import { Box, IconButton, MenuItem, useTheme, Typography } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu'; // Add this import
 import { useContext, useState } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
@@ -13,7 +14,7 @@ import Cookies from "js-cookie";
 import { AuthContext } from "../../authContext";
 import { useEffect } from "react";
 
-const Topbar = () => {
+const Topbar = ({ onSidebarToggle }) => { // Add onSidebarToggle prop
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
@@ -68,8 +69,15 @@ const Topbar = () => {
         // boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <Box display="flex" alignItems="center"
-      >
+      <Box display="flex" alignItems="center">
+        <IconButton
+          color="inherit"
+          onClick={onSidebarToggle}
+          edge="start"
+          sx={{ marginRight: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
         <Typography
           marginTop="5px"
           component={Link}
@@ -83,7 +91,7 @@ const Topbar = () => {
           GNOSE
         </Typography>
         {/* <MenuItem component={Link} to="/dashboard">Dashboard</MenuItem> */}
-        <Box display="flex" alignItems="center" marginLeft="5px">
+        {/* <Box display="flex" alignItems="center" marginLeft="5px">
           <MenuItem component={Link} to="/dashboard/relatorios">
             Empresas
           </MenuItem>
@@ -93,7 +101,7 @@ const Topbar = () => {
           <MenuItem component={Link} to="/dashboard/clientes">
             Clientes
           </MenuItem>
-        </Box>
+        </Box> */}
       </Box>
       <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>
