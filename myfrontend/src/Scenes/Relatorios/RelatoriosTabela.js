@@ -119,7 +119,7 @@ const ClientesTabela = ({ margin, altura, largura, companyId }) => {
 
   useEffect(() => {
     fetchCargas();
-  }, []);
+  }, [companyId]);
 
   if (loading) {
     return <LinearProgress sx={{ color: colors.blueAccent[400] }} />;
