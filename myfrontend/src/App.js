@@ -17,6 +17,7 @@ import { Register } from "./Scenes/Register/Register";
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Funcionarios from "./Scenes/Funcionarios/Funcionarios";
+import Profile from "./Scenes/Profile/Profile";
 
 const Topbar = lazy(() => import('./Scenes/Global/Topbar'));
 const Dashboard = lazy(() => import('./Scenes/Dashboard/Dashboard'));
@@ -66,6 +67,7 @@ function App() {
                         <Route path="/dashboard/clientes" element={<Clientes />} />
                         <Route path="/dashboard/relatorios" element={<Relatorios />} />
                         <Route path="/dashboard/funcionarios" element={<Funcionarios/>} />
+                        <Route path="/dashboard/profile/" element={<Profile/>} />
                       </Route>
                     </Routes>
                   </Suspense>
