@@ -112,24 +112,6 @@ const Topbar = ({ onSidebarToggle }) => { // Add onSidebarToggle prop
           )}
         </IconButton>
         <IconButton>
-          <PersonOutlined onClick={handleopenprofile} />
-
-        </IconButton>
-        <Menu
-        id="simple-menu"
-        anchorEl={companyselect}
-        keepMounted
-        open={Boolean(companyselect)}
-        onClose={handlecloseprofile}
-      >
-          <MenuItem onClick={handlecloseprofile}>
-            Trevo
-          </MenuItem>
-          <MenuItem onClick={handlecloseprofile}>
-            CardozoBros
-          </MenuItem>
-      </Menu>
-        <IconButton>
           <NotificationsOutlined />
         </IconButton>
         <IconButton>

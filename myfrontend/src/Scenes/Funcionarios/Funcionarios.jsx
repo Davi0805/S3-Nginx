@@ -60,7 +60,7 @@ const Funcionarios = () => {
   };
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    /* { field: "id", headerName: "ID", flex: 0.5 }, */
     { field: "first_name", headerName: "Nome", flex: 1 },
     { 
       field: "last_name", 
@@ -143,6 +143,7 @@ const Funcionarios = () => {
         open={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         funcionario={selectedFuncionario}
+        company_id={selectedCompanyObj?.id.companyId}
         onSave={() => {
           fetchFuncionarios();
           setIsModalOpen(false);

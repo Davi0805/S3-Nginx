@@ -107,7 +107,7 @@ const Sidebar = ({ isCollapsed, onToggle }) => {
       
       <List sx={{ marginTop: 'auto' }}>
         <Divider sx={{m: "13px"}} />
-        <ListItem button component={Link} onClick={onToggle} to="/dashboard/perfil">
+        <ListItem button component={Link} onClick={onToggle} to="/dashboard/profile">
           <ListItemIcon>
             <PersonOutlined />
           </ListItemIcon>

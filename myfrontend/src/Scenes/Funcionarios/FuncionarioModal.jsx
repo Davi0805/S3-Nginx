@@ -7,15 +7,18 @@ import {
   Button,
   TextField,
   Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import axios from "axios";
+import axiosConfig from "../../axiosConfig";
 
-const FuncionarioModal = ({ open, onClose, funcionario, onSave }) => {
+const FuncionarioModal = ({ open, onClose, funcionario, onSave, company_id }) => {
   const [formData, setFormData] = useState({
-    nome: "",
-    cargo: "",
+    permission: "",
     email: "",
-    telefone: "",
   });
 
   useEffect(() => {
@@ -23,10 +26,8 @@ const FuncionarioModal = ({ open, onClose, funcionario, onSave }) => {
       setFormData(funcionario);
     } else {
       setFormData({
-        nome: "",
-        cargo: "",
+        permission: "",
         email: "",
-        telefone: "",
       });
     }
   }, [funcionario]);
@@ -37,7 +38,11 @@ const FuncionarioModal = ({ open, onClose, funcionario, onSave }) => {
       if (funcionario) {
         await axios.put(`http://localhost:3000/funcionarios/${funcionario.id}`, formData);
       } else {
-        await axios.post("http://localhost:3000/funcionarios", formData);
+        const dataToSend = {
+          ...formData,
+          companyId: company_id
+        };
+        await axiosConfig.post("/usr/company/add_func", dataToSend);
       }
       onSave();
     } catch (error) {
@@ -52,6 +57,12 @@ const FuncionarioModal = ({ open, onClose, funcionario, onSave }) => {
       [name]: value,
     }));
   };
+
+  const permissions = [
+    { value: "A", label: "Admin" },
+    { value: "B", label: "Criar/Editar" },
+    { value: "C", label: "Apenas visualizar" },
+  ];
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -73,14 +84,21 @@ const FuncionarioModal = ({ open, onClose, funcionario, onSave }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Cargo"
-                name="cargo"
-                value={formData.cargo}
-                onChange={handleChange}
-                required
-              />
+              <FormControl fullWidth required>
+                <InputLabel>Permissão</InputLabel>
+                <Select
+                  name="permission"
+                  value={formData.permission}
+                  onChange={handleChange}
+                  label="Permissão"
+                >
+                  {permissions.map((perm) => (
+                    <MenuItem key={perm.value} value={perm.value}>
+                      {perm.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
